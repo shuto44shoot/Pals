@@ -14,8 +14,9 @@ import {
     arrayRemove,
     arrayUnion,
     DocumentSnapshot,
-    where
+    where,
 } from "firebase/firestore";
+import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from "react";
 import { db, auth } from "../firebase/firebase";
 import Modal from "./Modal";
@@ -31,6 +32,8 @@ function ReadDB(props) {
     const [watch, setWatch] = useState(false);
     const [message, setMessage] = useState("みんなの番組表を見る")
     const [icon, setIcon] = useState(false)
+
+    let time = new Date()   //現在時刻取得
 
     useEffect(() => {
         const postData = collection(db, "users");
@@ -88,10 +91,10 @@ function ReadDB(props) {
         })
         console.log(userCollection)
     }
-    const AddGood = (post, i) => {
+    const AddGood = (post) => {
         setIcon(true)
-        console.log(posts[i].id)
-        const userCollection = doc(db, 'users', posts[i].id);
+        console.log(posts[choiceTable].id)
+        const userCollection = doc(db, 'users', posts[choiceTable].id);
         const docRef = updateDoc(userCollection, {
             Tmovies: arrayUnion({
                 title: post.title,
@@ -115,10 +118,68 @@ function ReadDB(props) {
             })
         })
     }
+    const AddGood2 = (post) => {
+        setIcon(true)
+        console.log(posts[choiceTable2].id)
+        const userCollection = doc(db, 'users', posts[choiceTable2].id);
+        const docRef = updateDoc(userCollection, {
+            Tmovies: arrayUnion({
+                title: post.title,
+                URL: post.URL,
+                img: post.img,
+                viewingTime: post.viewingTime,
+                streamingTime: post.streamingTime,
+                comment: post.comment,
+                good: post.good + 1
+            })
+        })
+        const docRef2 = updateDoc(userCollection, {
+            Tmovies: arrayRemove({
+                title: post.title,
+                URL: post.URL,
+                img: post.img,
+                viewingTime: post.viewingTime,
+                streamingTime: post.streamingTime,
+                comment: post.comment,
+                good: post.good
+            })
+        })
+    }
+    const OpenMovie = () => {
+        const now = dayjs(time).format('HH:mm') //現在時刻
+        const urls = []
+        posts[choiceTable]?.Tmovies?.sort(function (a, b) {
+            return (a.streamingTime < b.streamingTime) ? -1 : 1;
+        }).map((post, i) => {
+            if (post.streamingTime <= now) {
+                urls.push(post.URL)
+                console.log(post.title, post.streamingTime)
+            } else {
+                console.log("まだ放送時間ではありません")
+            }
+        })
+        window.open(urls[urls.length - 1], '_blank')
+    }
+    const OpenMovie2 = () => {
+        const now = dayjs(time).format('HH:mm') //現在時刻
+        const urls = []
+        posts[choiceTable2]?.Tmovies?.sort(function (a, b) {
+            return (a.streamingTime < b.streamingTime) ? -1 : 1;
+        }).map((post, i) => {
+            if (post.streamingTime <= now) {
+                urls.push(post.URL)
+                console.log(post.title, post.streamingTime)
+            } else {
+                console.log("まだ放送時間ではありません")
+            }
+        })
+        window.open(urls[urls.length - 1], '_blank')
+    }
 
     return (
         <div className="App">
-            <div>
+            <h1 className="timestamp">{dayjs(time).format('HH:mm')}</h1>
+            <div className="">
                 <button className="watchTables" onClick={watchTables}>
                     <span className="hover-underline-animation"> {message} </span>
                     <svg viewBox="0 0 46 16" height="10" width="30" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal">
@@ -131,6 +192,13 @@ function ReadDB(props) {
                     <div className="" >
                         <hr className="keyline" />
                         <h2>user{choiceTable + 1}の番組表</h2>
+                        <div className="wrap-center">
+                            <button className="TVmode" onClick={OpenMovie}>
+                                <svg class="play-icon" viewBox="0 0 40 40">
+                                    <path d="M 10,10 L 30,20 L 10,30 z"></path>
+                                </svg>
+                                現在の配信動画を見る</button>
+                        </div>
                         <div className="others">
                             {posts[choiceTable]?.Tmovies?.sort(function (a, b) {
                                 return (a.streamingTime < b.streamingTime) ? -1 : 1;
@@ -149,7 +217,7 @@ function ReadDB(props) {
                                             </span>
                                             <button className="watched"
                                                 onClick={(e) => {
-                                                    AddGood(post, i)
+                                                    AddGood(post)
                                                 }}>
                                                 <span className="icon">
                                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -176,6 +244,13 @@ function ReadDB(props) {
                         </div>
                         <hr className="keyline" />
                         <h2>user{choiceTable2 + 1}の番組表</h2>
+                        <div className="wrap-center">
+                            <button className="TVmode" onClick={OpenMovie2}>
+                                <svg class="play-icon" viewBox="0 0 40 40">
+                                    <path d="M 10,10 L 30,20 L 10,30 z"></path>
+                                </svg>
+                                現在の配信動画を見る</button>
+                        </div>
                         <div className="others">
                             {posts[choiceTable2]?.Tmovies?.sort(function (a, b) {
                                 return (a.streamingTime < b.streamingTime) ? -1 : 1;
@@ -194,7 +269,7 @@ function ReadDB(props) {
                                             </span>
                                             <button className="watched"
                                                 onClick={(e) => {
-                                                    AddGood(post, i)
+                                                    AddGood2(post)
                                                 }}>
                                                 <span className="icon">
                                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -227,7 +302,7 @@ function ReadDB(props) {
                 )
                 }
             </div >
-            <div className="block">
+            <div className="whole">
                 <div className="myLists-area">
                     <h3>あなたのマイリスト</h3>
                     {isLogin !== "" && posts[isLogin]?.mylists?.movies?.map((post, i) => (

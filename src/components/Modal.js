@@ -43,7 +43,7 @@ const Modal = (props) => {
         <>
             {props.showFlag ? ( // showFlagがtrueだったらModalを表示する
                 <div id="overlay" onClick={closeModal}>
-                    <div id="content" onClick={(e) => e.stopPropagation()}>
+                    <div className="content" onClick={(e) => e.stopPropagation()}>
                         <h3 id="Title">{props.content.title}</h3>
                         <div className="modal">
                             <img className="modal-item" src={props.content.img} alt={props.content.title} />

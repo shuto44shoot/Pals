@@ -21,12 +21,12 @@ function Home() {
             <div className='block'>
                 {user ? (
                     <div className='user'>
-                        <div>
-                            <p>user{user+1}</p>
+                        <div className="user-area">
+                            <p>user{user + 1}</p>
+                            <button onClick={() => setUser()}>
+                                <a>ログアウト</a>
+                            </button>
                         </div>
-                        <button onClick={() => setUser()}>
-                            <a>ログアウト</a>
-                        </button>
                         <div>
                             <h1 className='App-header'>PalStreaming 番組表管理</h1>
                             <ReadDB user={user} />
@@ -36,19 +36,19 @@ function Home() {
                     <div className='Login'>
                         <h1 className='App-header'>PalStreaming</h1>
                         <h1> ログインしてください</h1>
-                            <button className="loginUser" onClick={signIn0}>
-                                <p>user1</p>
-                            </button>
-                            <button className="loginUser" onClick={signIn1}>
-                                <p>user2</p>
-                            </button>
-                            <button className="loginUser" onClick={signIn2}>
-                                <p>user3</p>
-                            </button>
+                        <button className="loginUser" onClick={signIn0}>
+                            <p>user1</p>
+                        </button>
+                        <button className="loginUser" onClick={signIn1}>
+                            <p>user2</p>
+                        </button>
+                        <button className="loginUser" onClick={signIn2}>
+                            <p>user3</p>
+                        </button>
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
 

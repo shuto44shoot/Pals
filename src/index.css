@@ -60,6 +60,10 @@ img.select{
   border-radius: 5px 5px 0 0;
 }
 
+h1.timestamp{
+  margin: 20px;
+}
+
 hr{
   border: none;
   border-bottom: 5px solid #f4f4f4;
@@ -291,4 +295,35 @@ button.cancell {
   transition: all 0.5s;
   box-shadow: 0 0 20px 0px #E50914;
   color: #E50914;
+}
+.TVmode {
+  background-color: #e8e8e8;
+  color: #E50914;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.play-icon {
+  width: 24px;
+  height: 24px;
+  fill: #E50914;
+  margin-right: 10px;
+}
+
+.TVmode:hover {
+  background-color: #4a4a4a;
+  color: #e8e8e8;
+  box-shadow: 2px 2px 20px #4a4a4a;
+  transform: translateY(-2px);
 }
