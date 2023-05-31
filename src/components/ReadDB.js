@@ -70,7 +70,7 @@ function ReadDB(props) {
         } else if (isLogin == 1) {
             setChoiceTable(0)
             setChoiceTable2(2)
-        } else if (isLogin == 2) {
+        } else if (isLogin == 5) {
             setChoiceTable(0)
             setChoiceTable2(1)
         }

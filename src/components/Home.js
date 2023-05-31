@@ -14,7 +14,7 @@ function Home() {
         setUser(1)
     }
     const signIn2 = () => {
-        setUser(2)
+        setUser(5)
     }
     return (
         <div className='App'>
@@ -43,7 +43,7 @@ function Home() {
                             <p>user2</p>
                         </button>
                         <button className="loginUser" onClick={signIn2}>
-                            <p>user3</p>
+                            <p>100kw研</p>
                         </button>
                     </div>
                 )}
